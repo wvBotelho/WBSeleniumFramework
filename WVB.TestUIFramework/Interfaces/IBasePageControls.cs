@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace WVB.TestUIFramework.Interfaces
 {
+    /// <summary>
+    /// Define a interface ao qual o usuário irá interagir com os elementos de uma página
+    /// </summary>
     public interface IBasePageControls
     {
         /// <summary>
@@ -25,7 +28,9 @@ namespace WVB.TestUIFramework.Interfaces
         /// Tira um print da página atual e salva no arquivo especificado
         /// </summary>
         /// <param name="nomeArquivo">Nome do arquivo</param>
-        void TakeScreeshot(string nomeArquivo);
+        /// <param name="filePath">Diretório onde a imagem será salva</param>
+        /// /// <param name="format">Formato da imagem salva. Opcional</param>
+        void TakeScreeshot(string nomeArquivo, string filePath, ScreenshotImageFormat format = ScreenshotImageFormat.Jpeg);
 
         /// <summary>
         /// Encontra o primeiro elemento no DOM usando o seletor informado

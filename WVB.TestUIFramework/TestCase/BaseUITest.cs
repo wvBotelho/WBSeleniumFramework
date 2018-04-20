@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using WVB.TestUIFramework.Configuration;
 using WVB.TestUIFramework.Enums;
 using WVB.TestUIFramework.Interfaces;
@@ -19,13 +18,13 @@ namespace WVB.TestUIFramework.TestCase
         /// Construtor da classe que recebe o browsers ao qual vai usar o Selenium WebDriver
         /// </summary>
         /// <param name="browsers">Browser que irá utilizar. Ex: Chrome, Edge, IE</param>
-        /// <param name="indexName">Indice do ConfigurationManager que está o caminho da pasta com o Driver</param>
+        /// <param name="folderPath">Diretório que está o caminho da pasta com o Driver</param>
         /// <param name="options">Opções para configurar na inicialização do navegador. Ex: "headless". Optional</param>
-        public BaseUITest(Browsers browsers, string indexName, params string[] options)
+        public BaseUITest(Browsers browsers, string folderPath, params string[] options)
         {
             SeleniumConfiguration = new SeleniumConfiguration();
 
-            FolderPath = ConfigurationManager.AppSettings[indexName];
+            FolderPath = folderPath;
 
             switch (browsers)
             {
@@ -53,10 +52,10 @@ namespace WVB.TestUIFramework.TestCase
         /// <summary>
         /// Configuração de inicialização dos testes
         /// </summary>
+        /// <param name="tempo">Quantidade de tempo que o Driver irá aguardar (Milisegundos/Segundos/Minutos).</param>
         /// <param name="maximiza">Indica se a janela será maximizada, caso não tenha feito isso no pelo options do Driver. Optional</param>
-        public void Initialize(bool maximiza = false)
+        public virtual void Initialize(TimeSpan tempo, bool maximiza = false)
         {
-            TimeSpan tempo = TimeSpan.FromSeconds(10);
             SeleniumConfiguration.ManagerImplicitWaitDriver(tempo);
 
             if (maximiza)

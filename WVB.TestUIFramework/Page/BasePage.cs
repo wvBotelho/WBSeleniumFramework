@@ -4,11 +4,11 @@ using OpenQA.Selenium.Support.UI;
 //using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
 using WVB.TestUIFramework.Configuration;
+using WVB.TestUIFramework.Helpers;
 using WVB.TestUIFramework.Interfaces;
 using WVB.TestUIFramework.SeleniumCustomExceptions;
 
@@ -17,12 +17,12 @@ namespace WVB.TestUIFramework.Page
     /// <summary>
     /// Page genérica com as funções básicas de acesso ao DOM, usando Selenium WebDriver e PageObject  
     /// </summary>
-    public abstract class BasePage : IBasePage, IBasePageControls
+    public abstract class BasePage : IBasePage
     {
         #region Propriedades
 
         /// <summary>
-        /// Tem acesso ao controle do browser, podendo acessar o DOM de uma página 
+        /// Pega o Driver que dá acesso ao controle do browser, podendo acessar os elementos de uma página 
         /// </summary>
         protected IWebDriver Driver
         {
@@ -82,12 +82,13 @@ namespace WVB.TestUIFramework.Page
         /// <summary>
         /// Construtor da Page
         /// </summary>
-        public BasePage()
+        /// <param name="baseUrl">Url base do site que irá testar</param>
+        public BasePage(string baseUrl)
         {
             //TODO: Testar o novo diretório do pageFactory (SeleniumExtras)
 
             PageFactory.InitElements(Driver, this);
-            BaseURL = ConfigurationManager.AppSettings["BaseURL"];
+            BaseURL = baseUrl;
             Wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(3));
         }
 
@@ -131,17 +132,27 @@ namespace WVB.TestUIFramework.Page
         /// Tira um print da página atual e salva no arquivo especificado
         /// </summary>
         /// <param name="nomeArquivo">Nome do arquivo</param>
-        public void TakeScreeshot(string nomeArquivo)
+        /// <param name="filePath">Diretório onde a imagem será salva</param>
+        /// <param name="format">Formato da imagem salva. Opcional</param>
+        public void TakeScreeshot(string nomeArquivo, string filePath, ScreenshotImageFormat format = ScreenshotImageFormat.Jpeg)
         {
-            string path = ConfigurationManager.AppSettings["PathError"];
+            try
+            {
+                if (string.IsNullOrEmpty(filePath))
+                    throw new ArgumentException("É necessário informar um diretório onde o arquivo será salvo.");
 
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+                if (!Directory.Exists(filePath))
+                    Directory.CreateDirectory(filePath);
 
-            ITakesScreenshot screenshot = Driver as ITakesScreenshot;
-            Screenshot shot = screenshot.GetScreenshot();
-            
-            shot.SaveAsFile($@"{path}\{nomeArquivo}", ScreenshotImageFormat.Jpeg);
+                ITakesScreenshot screenshot = Driver as ITakesScreenshot;
+                Screenshot shot = screenshot.GetScreenshot();
+
+                shot.SaveAsFile(ScreenShotHelper.FormatFileName(nomeArquivo, filePath), format);
+            }
+            catch (WebDriverException e)
+            {
+                throw new WebDriverException(e.Message.ToString());
+            }            
         }
 
         /// <summary>
@@ -157,7 +168,6 @@ namespace WVB.TestUIFramework.Page
             }
             catch (NoSuchElementException e)
             {
-                TakeScreeshot("NoElementFound");
                 throw new NoSuchElementException(e.Message.ToString());
             }
         }
@@ -175,7 +185,6 @@ namespace WVB.TestUIFramework.Page
             }
             catch (NoSuchElementException e)
             {
-                TakeScreeshot("NoElementsFound");
                 throw new NoSuchElementException(e.Message.ToString());
             }
         }
@@ -186,15 +195,22 @@ namespace WVB.TestUIFramework.Page
         /// <param name="element">Elemento que levanta o alert</param>
         public void AceitarAlert(IWebElement element)
         {
-            if (element == null)
-                throw new ArgumentException("Elemento não foi encontrado.");
+            try
+            {
+                if (element == null)
+                    throw new ArgumentException("Elemento não foi encontrado.");
 
-            if (!element.Displayed)
-                throw new NoSuchElementException("Elemento não está visivel no DOM.");
+                if (!element.Displayed)
+                    throw new NoSuchElementException("Elemento não está visivel no DOM.");
 
-            ExecutedJavascript("arguments[0].click()", element);
-            IAlert alert = Driver.SwitchTo().Alert();
-            alert.Accept();
+                ExecutedJavascript("arguments[0].click()", element);
+                IAlert alert = Driver.SwitchTo().Alert();
+                alert.Accept();
+            }
+            catch (WebDriverException e)
+            {
+                throw new WebDriverException(e.Message.ToString());
+            }            
         }
 
         /// <summary>
@@ -203,15 +219,22 @@ namespace WVB.TestUIFramework.Page
         /// <param name="element">Elemento que levanta o alert</param>
         public void RecusarAlert(IWebElement element)
         {
-            if (element == null)
-                throw new ArgumentException("Elemento não foi encontrado.");
+            try
+            {
+                if (element == null)
+                    throw new ArgumentException("Elemento não foi encontrado.");
 
-            if (!element.Displayed)
-                throw new NoSuchElementException("Elemento não encontrado");
+                if (!element.Displayed)
+                    throw new NoSuchElementException("Elemento não encontrado");
 
-            ExecutedJavascript("arguments[0].click()", element);
-            IAlert alert = Driver.SwitchTo().Alert();
-            alert.Dismiss();
+                ExecutedJavascript("arguments[0].click()", element);
+                IAlert alert = Driver.SwitchTo().Alert();
+                alert.Dismiss();
+            }
+            catch (WebDriverException e)
+            {
+                throw new WebDriverException(e.Message.ToString());
+            }            
         }
 
         /// <summary>
@@ -221,16 +244,23 @@ namespace WVB.TestUIFramework.Page
         /// <returns>Retorna o texto</returns>
         public string GetAlertMessage(IWebElement element)
         {
-            if (element == null)
-                throw new ArgumentException("Elemento não foi encontrado.");
+            try
+            {
+                if (element == null)
+                    throw new ArgumentException("Elemento não foi encontrado.");
 
-            if (!element.Displayed)
-                throw new NoSuchElementException("Elemento não encontrado");
+                if (!element.Displayed)
+                    throw new NoSuchElementException("Elemento não encontrado");
 
-            ExecutedJavascript("arguments[0].click()", element);
-            IAlert alert = Driver.SwitchTo().Alert();
+                ExecutedJavascript("arguments[0].click()", element);
+                IAlert alert = Driver.SwitchTo().Alert();
 
-            return alert.Text;
+                return alert.Text;
+            }            
+            catch (WebDriverException e)
+            {
+                throw new WebDriverException(e.Message.ToString());
+            }
         }
 
         /// <summary>

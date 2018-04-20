@@ -56,7 +56,9 @@
   <ItemGroup>
     <Compile Include="Configuration\SeleniumConfiguration.cs" />
     <Compile Include="Enums\Browsers.cs" />
+    <Compile Include="Helpers\ScreenShotHelper.cs" />
     <Compile Include="Interfaces\IBasePage.cs" />
+    <Compile Include="Interfaces\IBasePageBasic.cs" />
     <Compile Include="Interfaces\IBasePageControls.cs" />
     <Compile Include="Interfaces\IBaseUITest.cs" />
     <Compile Include="Interfaces\ISeleniumConfiguration.cs" />

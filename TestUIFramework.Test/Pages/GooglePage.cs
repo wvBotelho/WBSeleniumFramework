@@ -14,12 +14,23 @@ namespace TestUIFramework.Test.Pages
         [CacheLookup]
         private IWebElement BotaoPesquisar { get; set; }
 
+        public GooglePage(string baseUrl) : base(baseUrl)
+        {
+        }
+
         public void NavigationToPage()
         {
-            Driver.Navigate().GoToUrl(BaseURL);
+            try
+            {
+                Driver.Navigate().GoToUrl(BaseURL);
 
-            if (!URL.Equals(BaseURL))
-                throw new NoSuchWindowException("deu ruim");
+                if (!URL.Equals(BaseURL))
+                    throw new NoSuchWindowException("deu ruim");
+            }
+            catch (WebDriverTimeoutException e)
+            {
+                throw new WebDriverTimeoutException(e.Message.ToString());
+            }            
         }
 
         public void Pesquisar(string pesquisa)
@@ -27,7 +38,6 @@ namespace TestUIFramework.Test.Pages
             CampoPesquisa.SendKeys(pesquisa);
 
             BotaoPesquisar.Click();
-        }
-        
+        }        
     }
 }
