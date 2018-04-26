@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
 //using SeleniumExtras.PageObjects;
 using System;
@@ -68,7 +67,17 @@ namespace WVB.TestUIFramework.Page
         /// <summary>
         /// URL base para acesso a página
         /// </summary>
-        public string BaseURL { get; set; }
+        public string BaseURL
+        {
+            get
+            {
+                return SeleniumConfiguration.BaseURL;
+            }
+            set
+            {
+                BaseURL = value;
+            }
+        }
 
         /// <summary>
         /// Explicit Waits: Aguarda uma condição ser verdadeira para executar um comando
@@ -82,13 +91,10 @@ namespace WVB.TestUIFramework.Page
         /// <summary>
         /// Construtor da Page
         /// </summary>
-        /// <param name="baseUrl">Url base do site que irá testar</param>
-        public BasePage(string baseUrl)
+        public BasePage()
         {
             //TODO: Testar o novo diretório do pageFactory (SeleniumExtras)
-
-            PageFactory.InitElements(Driver, this);
-            BaseURL = baseUrl;
+            //PageFactory.InitElements(Driver, this);
             Wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(3));
         }
 
@@ -133,8 +139,8 @@ namespace WVB.TestUIFramework.Page
         /// </summary>
         /// <param name="nomeArquivo">Nome do arquivo</param>
         /// <param name="filePath">Diretório onde a imagem será salva</param>
-        /// <param name="format">Formato da imagem salva. Opcional</param>
-        public void TakeScreeshot(string nomeArquivo, string filePath, ScreenshotImageFormat format = ScreenshotImageFormat.Jpeg)
+        /// <param name="format">Formato da imagem salva</param>
+        public void TakeScreeshot(string nomeArquivo, string filePath, ScreenshotImageFormat format)
         {
             try
             {
@@ -147,7 +153,7 @@ namespace WVB.TestUIFramework.Page
                 ITakesScreenshot screenshot = Driver as ITakesScreenshot;
                 Screenshot shot = screenshot.GetScreenshot();
 
-                shot.SaveAsFile(ScreenShotHelper.FormatFileName(nomeArquivo, filePath), format);
+                shot.SaveAsFile(ScreenShotHelper.FormatFileName(nomeArquivo, filePath, format), format);
             }
             catch (WebDriverException e)
             {

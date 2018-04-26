@@ -10,56 +10,24 @@ namespace WVB.TestUIFramework.TestCase
     /// </summary>
     public abstract class BaseUITest : IBaseUITest
     {
-        private ISeleniumConfiguration SeleniumConfiguration { get; set; }
-
-        private string FolderPath { get; set; }
-
-        /// <summary>
-        /// Construtor da classe que recebe o browsers ao qual vai usar o Selenium WebDriver
-        /// </summary>
-        /// <param name="browsers">Browser que irá utilizar. Ex: Chrome, Edge, IE</param>
-        /// <param name="folderPath">Diretório que está o caminho da pasta com o Driver</param>
-        /// <param name="options">Opções para configurar na inicialização do navegador. Ex: "headless". Optional</param>
-        public BaseUITest(Browsers browsers, string folderPath, params string[] options)
-        {
-            SeleniumConfiguration = new SeleniumConfiguration();
-
-            FolderPath = folderPath;
-
-            switch (browsers)
-            {
-                case Browsers.Chrome:
-                    SeleniumConfiguration.ChromeInstance(FolderPath, null, options);
-                    break;
-                case Browsers.Edge:
-                    SeleniumConfiguration.EdgeInstance(FolderPath);
-                    break;
-                case Browsers.IE:
-                    SeleniumConfiguration.IEInstance(FolderPath);
-                    break;
-                case Browsers.Opera:
-                    SeleniumConfiguration.OperaInstance(FolderPath, null, options);
-                    break;
-                case Browsers.Safari:
-                    SeleniumConfiguration.SafariInstance(FolderPath);
-                    break;
-                default:
-                    SeleniumConfiguration.FoxInstance(options);
-                    break;
-            }
-        }
+        private SeleniumConfiguration SeleniumConfiguration { get; set; }
 
         /// <summary>
         /// Configuração de inicialização dos testes
-        /// </summary>
+        /// </summary>        
+        /// <param name="browsers">Browser que irá utilizar. Ex: Chrome, Edge, IE</param>
+        /// <param name="folderPath">Diretório que está o caminho da pasta com o Driver</param>
+        /// <param name="baseURL">URL base</param>
         /// <param name="tempo">Quantidade de tempo que o Driver irá aguardar (Milisegundos/Segundos/Minutos).</param>
-        /// <param name="maximiza">Indica se a janela será maximizada, caso não tenha feito isso no pelo options do Driver. Optional</param>
-        public virtual void Initialize(TimeSpan tempo, bool maximiza = false)
+        /// <param name="options">Opções para configurar na inicialização do navegador. Ex: "headless". Optional</param>
+        public virtual void Initialize(Browsers browsers, string folderPath, string baseURL, TimeSpan tempo, params string[] options)
         {
-            SeleniumConfiguration.ManagerImplicitWaitDriver(tempo);
+            SeleniumConfiguration = new SeleniumConfiguration();
 
-            if (maximiza)
-                SeleniumConfiguration.MaximizeWindow();
+            SeleniumConfiguration.InicializaDriver(browsers, folderPath, options);
+            SeleniumConfiguration.BaseURL = baseURL;
+            SeleniumConfiguration.ManagerImplicitWaitDriver(tempo);
+            SeleniumConfiguration.MaximizeWindow();
         }
 
         /// <summary>

@@ -29,8 +29,8 @@ namespace WVB.TestUIFramework.Interfaces
         /// </summary>
         /// <param name="nomeArquivo">Nome do arquivo</param>
         /// <param name="filePath">Diretório onde a imagem será salva</param>
-        /// /// <param name="format">Formato da imagem salva. Opcional</param>
-        void TakeScreeshot(string nomeArquivo, string filePath, ScreenshotImageFormat format = ScreenshotImageFormat.Jpeg);
+        /// /// <param name="format">Formato da imagem salva</param>
+        void TakeScreeshot(string nomeArquivo, string filePath, ScreenshotImageFormat format);
 
         /// <summary>
         /// Encontra o primeiro elemento no DOM usando o seletor informado

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using System;
 
 namespace WVB.TestUIFramework.Helpers
 {
@@ -13,11 +14,9 @@ namespace WVB.TestUIFramework.Helpers
         /// <param name="nomeArquivo">Nome do arquivo</param>
         /// <param name="pasta">O caminho da pasta, onde ele vai baixado</param>
         /// <returns>Retorna uma string com o nome do arquivo formatado</returns>
-        public static string FormatFileName(string nomeArquivo, string pasta)
+        public static string FormatFileName(string nomeArquivo, string pasta, ScreenshotImageFormat format)
         {
-            string fileName = $"{FormatName(nomeArquivo, pasta)}_{GetCurrentDateTime()}";
-
-            return fileName;
+            return $"{FormatName(nomeArquivo, pasta)}_{GetCurrentDateTime()}.{format}";
         }
 
         /// <summary>

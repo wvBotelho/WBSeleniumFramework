@@ -1,49 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
+using WVB.TestUIFramework.Enums;
 
 namespace WVB.TestUIFramework.Interfaces
 {
     public interface ISeleniumConfiguration
     {
         /// <summary>
-        /// Inicializa uma nova instância do ChromeDriver
+        /// Inicializa uma nova instância do WebDriver
         /// </summary>
-        /// <param name="folderPath">Pasta onde se encontra o Driver do Chrome</param>
-        /// <param name="preferences">Preferências do usuário. Opcional</param>
-        /// <param name="options">Opções para configurar na inicialização do navegador. Ex: "headless". Opcional</param>
-        void ChromeInstance(string folderPath, Dictionary<string, object> preferences = null, params string[] options);
-
-        /// <summary>
-        /// Inicializa uma nova instância do EdgeDriver
-        /// </summary>
-        /// <param name="folderPath">Pasta onde se encontra o Driver do Edge</param>
-        void EdgeInstance(string folderPath);
-
-        /// <summary>
-        /// Inicializa uma nova instância do InternetExplorerDriver
-        /// </summary>
-        /// <param name="folderPath">Pasta onde se encontra o Driver do Internet Explorer</param>
-        void IEInstance(string folderPath);
-
-        /// <summary>
-        /// Inicializa uma nova instância do OperaDriver
-        /// </summary>
-        /// <param name="folderPath">Pasta onde se encontra o Driver do Opera</param>
-        /// <param name="preferences">Preferências do usuário. Opcional</param>
-        /// <param name="options">Opções para configurar na inicialização do navegador. Ex: "headless"</param>
-        void OperaInstance(string folderPath, Dictionary<string, object> preferences = null, params string[] options);
-
-        /// <summary>
-        /// Inicializa uma nova instância do SafariDriver
-        /// </summary>
-        /// <param name="folderPath">Pasta onde se encontra o Driver do Safari</param>
-        void SafariInstance(string folderPath);
-
-        /// <summary>
-        /// Inicializa uma nova instância do FirefoxDriver
-        /// </summary>
-        /// <param name="options">Opções para configurar na inicialização do navegador. Ex: "headless"</param>
-        void FoxInstance(params string[] options);
+        /// <param name="browsers">Browser que irá utilizar. Ex: Chrome, Edge, IE</param>
+        /// <param name="folderPath">Diretório que está o caminho da pasta com o Driver</param>
+        /// <param name="options">Opções para configurar na inicialização do navegador. Ex: "headless". Optional</param>
+        void InicializaDriver(Browsers browsers, string folderPath, params string[] options);
 
         /// <summary>
         /// Configura o tempo máximo que o Driver aguarda Implicit waits

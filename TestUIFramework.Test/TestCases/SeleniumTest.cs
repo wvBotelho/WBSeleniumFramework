@@ -2,7 +2,9 @@
 using System;
 using System.Configuration;
 using TestUIFramework.Test.Pages;
+using WVB.TestUIFramework.Configuration;
 using WVB.TestUIFramework.Enums;
+using WVB.TestUIFramework.Page;
 using WVB.TestUIFramework.TestCase;
 
 namespace TestUIFramework.Test.TestCases
@@ -14,14 +16,12 @@ namespace TestUIFramework.Test.TestCases
 
         private string ErrorPath = ConfigurationManager.AppSettings["PathError"];
 
-        public SeleniumTest() : base(Browsers.Chrome, ConfigurationManager.AppSettings["Drivers"])
-        {
-        }
+        private string FolderPath = ConfigurationManager.AppSettings["Drivers"];
 
         [TestInitialize]
         public void Initialize()
         {
-            base.Initialize(TimeSpan.FromSeconds(30), true);
+            base.Initialize(Browsers.Chrome, FolderPath, BaseURL, TimeSpan.FromSeconds(30));
         }
 
         [TestCleanup]
@@ -33,11 +33,18 @@ namespace TestUIFramework.Test.TestCases
         [TestMethod]
         public void Teste()
         {
-            GooglePage googlePage = new GooglePage(BaseURL);
+            GooglePage googlePage = new GooglePage();
 
             googlePage.NavigationToPage();
             googlePage.Pesquisar("ps3brasil");
-            googlePage.TakeScreeshot("Teste", ErrorPath);
+            googlePage.TakeScreeshot("Teste", ErrorPath, OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
+        }
+
+        [TestMethod]
+        public void Teste2()
+        {
+            Page.GetPage<GooglePage>().NavigationToPage();
+            Page.GetPage<GooglePage>().Pesquisar("MeuPS4");
         }
     }
 }

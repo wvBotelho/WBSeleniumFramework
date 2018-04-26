@@ -14,7 +14,7 @@ namespace TestUIFramework.Test.Pages
         [CacheLookup]
         private IWebElement BotaoPesquisar { get; set; }
 
-        public GooglePage(string baseUrl) : base(baseUrl)
+        public GooglePage()
         {
         }
 

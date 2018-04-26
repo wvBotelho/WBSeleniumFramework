@@ -63,6 +63,7 @@
     <Compile Include="Interfaces\IBaseUITest.cs" />
     <Compile Include="Interfaces\ISeleniumConfiguration.cs" />
     <Compile Include="Page\BasePage.cs" />
+    <Compile Include="Page\Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeleniumCustomExceptions\NotJavascriptConvertException.cs" />
     <Compile Include="TestCase\BaseUITest.cs" />
