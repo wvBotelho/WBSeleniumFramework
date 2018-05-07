@@ -54,13 +54,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Action\SeleniumActions.cs" />
     <Compile Include="Configuration\SeleniumConfiguration.cs" />
     <Compile Include="Enums\Browsers.cs" />
+    <Compile Include="Enums\TimeoutExplicitWait.cs" />
     <Compile Include="Helpers\ScreenShotHelper.cs" />
+    <Compile Include="Helpers\ValidateElements.cs" />
     <Compile Include="Interfaces\IBasePage.cs" />
     <Compile Include="Interfaces\IBasePageBasic.cs" />
     <Compile Include="Interfaces\IBasePageControls.cs" />
     <Compile Include="Interfaces\IBaseUITest.cs" />
+    <Compile Include="Interfaces\ISeleniumActions.cs" />
     <Compile Include="Interfaces\ISeleniumConfiguration.cs" />
     <Compile Include="Page\BasePage.cs" />
     <Compile Include="Page\Page.cs" />

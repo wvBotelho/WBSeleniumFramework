@@ -2,7 +2,6 @@
 using System;
 using System.Configuration;
 using TestUIFramework.Test.Pages;
-using WVB.TestUIFramework.Configuration;
 using WVB.TestUIFramework.Enums;
 using WVB.TestUIFramework.Page;
 using WVB.TestUIFramework.TestCase;
@@ -17,6 +16,30 @@ namespace TestUIFramework.Test.TestCases
         private string ErrorPath = ConfigurationManager.AppSettings["PathError"];
 
         private string FolderPath = ConfigurationManager.AppSettings["Drivers"];
+
+        private ContextPage ContextPage
+        {
+            get
+            {
+                return Page.GetPage<ContextPage>();
+            }
+        }
+
+        private GooglePage GooglePage
+        {
+            get
+            {
+                return Page.GetPage<GooglePage>();
+            }
+        }
+
+        private AutoCompletePage AutoCompletePage
+        {
+            get
+            {
+                return Page.GetPage<AutoCompletePage>();
+            }
+        }
 
         [TestInitialize]
         public void Initialize()
@@ -41,10 +64,20 @@ namespace TestUIFramework.Test.TestCases
         }
 
         [TestMethod]
-        public void Teste2()
+        public void SelecionarOpcaoEmUmAutoComplete()
         {
-            Page.GetPage<GooglePage>().NavigationToPage();
-            Page.GetPage<GooglePage>().Pesquisar("MeuPS4");
+            AutoCompletePage.NavigateToAutoCompletePage("https://www.w3schools.com/howto/howto_js_autocomplete.asp");
+            AutoCompletePage.SelecionarOpcaoEmAutoComplete("bra");
+            Assert.AreEqual("Brazil", AutoCompletePage.GetTexto());
+
+        }
+
+        [TestMethod]
+        public void SelecionarOpcaoNoMenuDeContexto()
+        {
+            ContextPage.NavigationToPage("http://medialize.github.io/jQuery-contextMenu/demo.html");
+            ContextPage.SelectOptionInContextMenu();
+            Assert.AreEqual("clicked: paste", ContextPage.GetAlertMessage(), "Era pra ser selecionado a opção paste");
         }
     }
 }

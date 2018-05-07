@@ -16,7 +16,7 @@ namespace WVB.TestUIFramework.Helpers
         /// <returns>Retorna uma string com o nome do arquivo formatado</returns>
         public static string FormatFileName(string nomeArquivo, string pasta, ScreenshotImageFormat format)
         {
-            return $"{FormatName(nomeArquivo, pasta)}_{GetCurrentDateTime()}.{format}";
+            return $"{FormatName(nomeArquivo, pasta)}_{GetCurrentDateTime()}.{format.ToString().ToLower()}";
         }
 
         /// <summary>

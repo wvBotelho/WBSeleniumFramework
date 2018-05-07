@@ -9,6 +9,17 @@ namespace WVB.TestUIFramework.Interfaces
     public interface IBasePageControls
     {
         /// <summary>
+        /// Navega para a página desejada
+        /// </summary>
+        void NavigationToPage();
+
+        /// <summary>
+        /// Navega para a página desejada
+        /// </summary>
+        /// <param name="url">Parte da URL para ser concatenada com a BaseURL</param>
+        void NavigationPage(string url);
+
+        /// <summary>
         /// Executa um comando Javascript na página atual
         /// </summary>
         /// <param name="js">Código Javascript a ser executado</param>
@@ -53,6 +64,11 @@ namespace WVB.TestUIFramework.Interfaces
         void AceitarAlert(IWebElement element);
 
         /// <summary>
+        /// Aceita um alert
+        /// </summary>
+        void AceitarAlert();
+
+        /// <summary>
         /// Recusa um alert
         /// </summary>
         /// <param name="element">Elemento que levanta o alert</param>
@@ -62,8 +78,14 @@ namespace WVB.TestUIFramework.Interfaces
         /// Pega o texto que está presente no alert
         /// </summary>
         /// <param name="element">Elemento que levanta o alert</param>
-        /// <returns>Retorna o texto</returns>
+        /// <returns>Retorna o texto presente no alert</returns>
         string GetAlertMessage(IWebElement element);
+        
+        /// <summary>
+        /// Pega o texto que está presente no alert
+        /// </summary>
+        /// <returns>Retorna o texto presento no alert</returns>
+        string GetAlertMessage();
 
         /// <summary>
         /// Faz o Download do arquivo na url especificada
